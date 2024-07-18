@@ -21,27 +21,36 @@ npm install deniable-encryption
 Here's a quick example to get you started:
 
 ```javascript
-const { DeniableEncryption } = require('deniable-encryption')
-
+import { DeniableEncryption } from 'deniable-encryption'
+const originalMessage = 'hello world'
+const plausibleMessage = 'goodbye world'
 // Generate a key pair
-const keyPair = DeniableEncryption.generateKeyPair()
+const { publicKey, privateKey } = DeniableEncryption.generateKeyPair()
 
 // Encrypt a message with a plausible alternative
-const encrypted = DeniableEncryption.encrypt({
-  originalMessage: 'Secret message',
-  plausibleMessage: 'Plausible alternative',
-  publicKey: keyPair.publicKey
+const {
+  encryptedOriginalMessage,
+  plausibleKeyPair,
+  encryptedPlausibleMessage
+} = DeniableEncryption.createDeniableEncryption({
+  originalMessage,
+  plausibleMessage,
+  publicKey
 })
-
-console.log(encrypted)
 
 // Decrypt the message
-const decrypted = DeniableEncryption.decrypt({
-  encryptedMessage: encrypted,
-  privateKey: keyPair.privateKey
-})
+const decryptedOriginalMessage = DeniableEncryption.decryptWithPrivateKey(
+  privateKey,
+  encryptedOriginalMessage
+)
 
-console.log(decrypted) // Outputs: Secret message
+const decryptedPlausibleMessage = DeniableEncryption.decryptWithPrivateKey(
+  plausibleKeyPair.privateKey,
+  encryptedPlausibleMessage
+)
+
+console.log('Decrypt original message:', decryptedOriginalMessage) // Outputs: hello world
+console.log('Decrypt plausible messages:', decryptedPlausibleMessage) // goodbye world
 ```
 
 ## API Reference
