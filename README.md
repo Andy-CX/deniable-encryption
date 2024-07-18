@@ -55,24 +55,36 @@ console.log('Decrypt plausible messages:', decryptedPlausibleMessage) // goodbye
 
 ## API Reference
 
-### `generateKeyPair()`
+### `generateKeyPair(modulusLength: number = 2048): KeyPair`
 
 Generates a public/private key pair for encryption and decryption.
 
-### `encrypt(options)`
+- **Parameters**
+  - `modulusLength`: The length of the modulus in bits. The default is 2048.
+- **Returns**
+  - A `KeyPair` object containing the `publicKey` and `privateKey`.
 
-Encrypts a message. `options` should include:
+### `decryptWithPrivateKey(privateKey: KeyObject, encryptedMessage: string): string`
 
-- `originalMessage`: The original message to be encrypted.
-- `plausibleMessage`: A plausible alternative message.
-- `publicKey`: The public key for encryption.
+Decrypts an encrypted message using the provided private key.
 
-### `decrypt(options)`
+- **Parameters**
+  - `privateKey`: The private key used for decryption.
+  - `encryptedMessage`: The encrypted message to be decrypted.
+- **Returns**
+  - The decrypted message as a string.
 
-Decrypts an encrypted message. `options` should include:
+### `createDeniableEncryption({ originalMessage, plausibleMessage, publicKey, modulusLength }): DeniableEncryptionResult`
 
-- `encryptedMessage`: The encrypted message.
-- `privateKey`: The private key for decryption.
+Creates a deniable encryption result, allowing for plausible deniability.
+
+- **Parameters**
+  - `originalMessage`: The original message to be encrypted.
+  - `plausibleMessage`: An alternative message that can be plausibly claimed as the original.
+  - `publicKey`: The public key used for encryption.
+  - `modulusLength`: Optional. The length of the modulus in bits. The default is 2048.
+- **Returns**
+  - A `DeniableEncryptionResult` object.
 
 ## Contributing
 
